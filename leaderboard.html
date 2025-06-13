@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leaf&Life - Leaderboard</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body.leaderboard-page {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #a8e063, #56ab2f);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .leaderboard-container {
+            background: #ffffff;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 500px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #2e7d32;
+        }
+        .leaderboard {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #555;
+        }
+        .leaderboard ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .leaderboard li {
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #388e3c;
+        }
+    </style>
+</head>
+<body class="leaderboard-page">
+    <div class="leaderboard-container">
+        <h1>Leaderboard</h1>
+        <div class="leaderboard">
+            <ul id="leaderboard-list">
+            </ul>
+        </div>
+        <button onclick="location.href='welcome.html'">Home</button>
+    </div>
+    <script>
+        let leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
+        if (leaderboard.length === 0) {
+            document.getElementById('leaderboard-list').innerHTML = "<li>No players have completed any tasks yet.</li>";
+        } else {
+            leaderboard.sort((a, b) => b.xp - a.xp);
+            const leaderboardList = document.getElementById('leaderboard-list');
+            leaderboard.forEach((user, index) => {
+                const li = document.createElement('li');
+                li.textContent = `${index + 1}. ${user.username} - Level ${user.level} - ${user.xp} XP`;
+                leaderboardList.appendChild(li);
+            });
+        }
+        function displayLeaderboard() {
+    let leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
+    leaderboard.sort((a, b) => b.xp - a.xp); 
+
+    const leaderboardContainer = document.getElementById('leaderboard');
+    leaderboardContainer.innerHTML = ''; 
+
+    leaderboard.forEach((user, index) => {
+        const userItem = document.createElement('div');
+        userItem.className = 'leaderboard-item';
+        userItem.innerHTML = `${index + 1}. ${user.username} - ${user.xp} XP`;
+        leaderboardContainer.appendChild(userItem);
+    });
+}
+    </script>
+</body>
+</html>

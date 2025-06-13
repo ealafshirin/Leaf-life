@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Leaf&Life - eco-tips</title>
+  <style>
+    body.eco-tips-page {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #56ab2f, #a8e063);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .tips-container {
+      background: #ffffff;
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      width: 500px;
+    }
+    h1 {
+      margin-bottom: 20px;
+      color: #2e7d32;
+    }
+    #tip {
+      font-size: 1.2rem;
+      margin: 20px 0;
+      color: #555;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #2e7d32;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #388e3c;
+    }
+    .button-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+  </style>
+</head>
+<body class="eco-tips-page">
+  <div class="tips-container">
+    <h1>Eco Tip of the Day</h1>
+    <div id="tip">Loading tip...</div>
+    <button onclick="showRandomTip()">Show Another Tip</button><br><br>
+    <button onclick="location.href='welcome.html'">Home</button>
+  </div>
+  <script>
+    const ecoTips = [
+      "Turn off lights when you leave a room to save energy.",
+      "Use a reusable water bottle instead of buying plastic ones.",
+      "Plant native trees and flowers to support local wildlife.",
+      "Compost your food scraps to reduce landfill waste.",
+      "Take shorter showers to conserve water.",
+      "Support eco-friendly brands and sustainable products.",
+      "Walk, bike, or carpool whenever possible to reduce pollution.",
+      "Recycle paper, glass, and metals properly.",
+      "Switch to energy-efficient LED light bulbs.",
+      "Bring your own bags when shopping to cut down on plastic waste."
+    ];
+
+    function showRandomTip() {
+      const randomIndex = Math.floor(Math.random() * ecoTips.length);
+      document.getElementById('tip').textContent = ecoTips[randomIndex];
+    }
+    window.onload = showRandomTip;
+  </script>
+</body>
+</html>

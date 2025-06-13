@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leaf&Life - Welcome</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
+</head>
+<body class="welcome-page">
+    <div class="welcome-container" id="welcome-page">
+        <h1>Welcome,🌿</h1>
+        <p>Protect the environment, one mission at a time!</p>
+        <div class="button-group">
+          <button onclick="location.href='start-mission.html'">Start New Mission</button><br> 
+<button onclick="window.location.href='track-progress.html'">My Progress</button>
+<button onclick="window.location.href='leaderboard.html'">Leaderboard</button>
+<a href="view-uploads.html">
+    <button class="view-uploads-btn">View Uploaded Photos</button>
+  </a>
+            <button onclick="location.href='eco-tips.html'">Eco Tips</button><br>
+<button id="logout-btn" onclick="logout()">Logout ╰┈➤</button>
+        </div>
+    </div>
+    
+    <div class="page" id="mission-page" style="display: none;">
+        <h2>Mission In Progress</h2>
+        <p id="mission-timer"></p>
+    </div>
+    <div class="page" id="progress-page" style="display: none;">
+      <h2>My Progress</h2>
+      <p>Name: <span id="user-name"></span></p>
+      <p>XP: <span id="user-xp"></span></p>
+      <progress id="xp-progress" max="100" value="0"></progress>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const currentUser = sessionStorage.getItem('currentUser'); 
+    if (currentUser) {
+        const welcomeHeading = document.querySelector('.welcome-container h1');
+        welcomeHeading.innerHTML = `Welcome , ${currentUser} !🌿`;
+        welcomeHeading.classList.add("fade-in");
+    } else {
+        location.href = "index.html";
+    }
+});
+function logout() {
+    sessionStorage.clear();
+    location.href = "index.html";
+}
+  </script>
+</body>
+</html>

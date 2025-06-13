@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>View uploads-Leaf&Life</title>
+  <style>
+  body{
+    font-family: 'Poppins', sans-serif;
+    background: white;
+    align-content: center;
+}
+.uploads-container {
+    background: #ffffff;
+    padding: 30px 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    max-width: 800px;
+    width: 100%;
+    margin-bottom: 80px; 
+}
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #2e7d32;
+}
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+.upload-card {
+    background: linear-gradient(to right, #b7e779, #4caf50);
+    border-radius: 100px;
+    padding: 2px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+    width: 50%;
+    align-content: center;
+    margin: 0 auto;
+}
+
+.upload-card:hover {
+    transform: translateY(-5px);
+}
+
+.upload-card img {
+    max-width: 100%;
+    border-radius: 10px;
+    height: 150px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+.username {
+    font-weight: bold;
+    color: #388e3c;
+}
+.task {
+    color: #000000;
+    font-size: 0.9rem;
+}
+h2{
+  text-align: center;
+  font-family: sans-serif;
+  color: darksalmon;
+  font-size: xx-large;
+}
+.back-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 10px 10px;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .back-btn:hover {
+    background: #388e3c;
+  }
+</style>
+</head>
+<body>
+  <h2>Your Contributions🌿</h2>
+  <div id="uploads-container"></div>
+  <button class="back-btn" onclick="location.href='welcome.html'">Back to Home</button>
+  <script>
+    const uploadsContainer = document.getElementById('uploads-container');
+    const uploads = JSON.parse(localStorage.getItem('uploads')) || [];
+    if (uploads.length === 0) {
+      uploadsContainer.innerHTML = '<p>No uploads yet.</p>';
+    } else {
+      uploads.reverse().forEach(upload => {
+        const card = document.createElement('div');
+        card.className = 'upload-card';
+        const imageUrl = upload.image.startsWith('data:image') ? upload.image : '';
+        card.innerHTML = `
+          <p><strong>Username:</strong> ${upload.username}</p>
+          <p><strong>Task:</strong> ${upload.task}</p>
+          ${imageUrl ? `<img src="${imageUrl}" alt="Uploaded Image">` : '<p>No image uploaded.</p>'}
+        `;
+        uploadsContainer.appendChild(card);
+      });
+    }
+  </script>
+</body>
+</html>

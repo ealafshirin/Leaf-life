@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mission completed - Leaf&Life</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #b7e779, #4caf50);
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .success-container {
+            background: #ffffff;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            width: 400px;
+        }
+        h2 {
+            font-size: 2rem;
+            color: #2e7d32;
+            margin-bottom: 20px;
+        }
+        .xp-message {
+            font-size: 1.2rem;
+            color: #388e3c;
+            margin: 15px 0;
+        }
+        .xp {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+        button {
+            margin-top: 20px;
+            padding: 12px 0;
+            width: 100%;
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #388e3c;
+        }
+    </style>
+</head>
+<body>
+<div class="success-container">
+    <h2>Mission Completed!</h2>
+    <div id="xp-message" class="xp-message"></div>
+    <div id="xp" class="xp"></div>
+
+    <button onclick="goBack()">Go Back</button>
+</div>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const completedTasks = parseInt(urlParams.get('completedTasks')) || 0;
+    let earnedXP = 0;
+    if (completedTasks === 1) {
+        earnedXP = 25;
+    } else if (completedTasks === 2) {
+        earnedXP = 60;
+    } else if (completedTasks >= 3) {
+        earnedXP = 100;
+    }
+    const currentUser = sessionStorage.getItem("currentUser");
+    document.getElementById('xp-message').textContent = `You completed ${completedTasks} task${completedTasks > 1 ? 's' : ''}!`;
+    document.getElementById('xp').textContent = `${earnedXP} XP`;
+    let totalXP = parseInt(localStorage.getItem('totalXP')) || 0;
+    totalXP += earnedXP;
+    localStorage.setItem('totalXP', totalXP);
+    let progress = JSON.parse(localStorage.getItem(currentUser + "_progress")) || { xp: 0, level: 1 };
+    progress.xp += earnedXP;
+    progress.level = Math.floor(progress.xp / 100) + 1;
+    localStorage.setItem(currentUser + "_progress", JSON.stringify(progress));
+    let leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
+    let user = leaderboard.find(u => u.username === currentUser);
+    if (!user) {  
+        user = {
+            username: currentUser,
+            xp: 0,
+            level: 1
+        };
+        leaderboard.push(user);
+    }
+    user.xp += earnedXP;
+    user.level = Math.floor(user.xp / 100) + 1;
+    localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+    function goBack() {
+        window.location.href = "welcome.html";
+    }
+</script>
+</body>
+</html>

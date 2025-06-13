@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leaf&Life missions</title>
+    <style>  
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #b7e779, #4caf50);
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .mission-container {
+            background: #ffffff;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            width: 450px;
+        }
+        h2 {
+            font-size: 2rem;
+            color: #2e7d32;
+            margin-bottom: 20px;
+        }
+        .task-container {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            justify-content: flex-start;
+        }
+        .task-checkbox {
+            margin-right: 10px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 12px 0;
+            width: 100%;
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #388e3c;
+        }
+
+        .timer {
+            font-size: 1.5rem;
+            color: #2e7d32;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        #join-status {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            color: #388e3c;
+        }
+    </style>
+</head>
+<body>
+<div class="mission-container">
+    <h2>New Mission:</h2>
+    <div id="sub-missions"></div>
+    <div id="timer" class="timer">Try to do all the sub-missions<br>
+         Within 24Hr and <br>
+         upload photo to Claim 100XP</div>
+    <button id="mission-button" onclick="joinMission()">Join Mission</button>
+    <button id="complete-mission-button" onclick="completeMission()" style="display:none;">Complete Mission</button>
+    <div id="join-status"></div>
+</div>
+<script>
+    const tasks = [
+        "Plant a native tree or native plant",
+        "Pick up 10 pieces of litter from a natural area",
+        "Build a small bird feeder and hang it outside",
+        "Plant a flower that attracts bees or butterflies",
+        "Set up a shelter or small wildlife house for local mammals like hedgehogs, rabbits, or squirrels",
+        "Leave a shallow bowl of water for birds and small animals",
+        "Clean a park, forest, or riverbank for 30 minutes",
+        "Save seeds from fruits and plant them",
+        "Spend some time documenting the local flora and fauna in your area",
+        "Spend 20 minutes observing local wildlife",
+        " Choose eco-friendly alternatives for everyday products, such as biodegradable soap or recycled paper",
+        "Avoid using any chemical pesticides for a day",
+        "Collect rainwater to water plants",
+        "Sketch or photograph 3 different wild plants",
+        "Share an educational post about biodiversity threats",
+        "Donate to a wildlife or biodiversity conservation group",
+        "Volunteer online for a biodiversity protection project",
+        "Spend 2 hours respecting nature without disturbing habitats",
+        "Report illegal tree cutting or wildlife harm if seen",
+        "Use a reusable bag and cup today",
+        "Organize a biodiversity awareness mini-event",
+        "Support organic and local farmers",
+        "Switch off unused lights and save energy for habitats",
+        "Make a mini-pond for insects and frogs in your garden",
+        "Reduce paper usage to save trees",
+        "Support coral reef conservation efforts",
+        "Install a bat house in your backyard",
+        "Participate in citizen science projects tracking animals",
+        "Avoid eating endangered species or illegal wildlife products",
+        "Create a social media campaign promoting local biodiversity"
+    ];
+
+    let timer;
+    function showSubMissions() {
+    const subMissionsContainer = document.getElementById('sub-missions');
+    subMissionsContainer.innerHTML = "";
+
+    const randomTasks = [];
+    while (randomTasks.length < 3) {
+        const randomTask = tasks[Math.floor(Math.random() * tasks.length)];
+        if (!randomTasks.includes(randomTask)) {
+            randomTasks.push(randomTask);
+        }
+    }
+    randomTasks.forEach(task => {
+        const taskContainer = document.createElement('div');
+        taskContainer.className = 'task-container';
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'task-checkbox';
+        const taskText = document.createElement('label');
+        taskText.textContent = task;
+        const photoInput = document.createElement('input');
+        photoInput.type = 'file';
+        photoInput.className = 'task-photo';
+        photoInput.accept = 'image/*';
+        photoInput.style.marginLeft = '10px';
+        taskContainer.appendChild(checkbox);
+        taskContainer.appendChild(taskText);
+        taskContainer.appendChild(photoInput);
+        subMissionsContainer.appendChild(taskContainer);
+    });
+}
+    function startTimer() {
+        let timeLeft = 24 * 60 * 60; 
+        timer = setInterval(() => {
+            const hours = String(Math.floor(timeLeft / 3600)).padStart(2, '0');
+            const minutes = String(Math.floor((timeLeft % 3600) / 60)).padStart(2, '0');
+            const seconds = String(timeLeft % 60).padStart(2, '0');
+            document.getElementById('timer').textContent = `Time Left: ${hours}:${minutes}:${seconds}`;
+            timeLeft--;
+            if (timeLeft < 0) {
+                clearInterval(timer);
+                alert('Mission time is over!');
+            }
+        }, 1000);
+    }
+    function joinMission() {
+        document.getElementById('mission-button').style.display = 'none'; 
+        document.getElementById('complete-mission-button').style.display = 'block'; 
+        document.getElementById('join-status').textContent = "You have joined the mission!";
+        showSubMissions(); 
+        startTimer(); 
+    }
+    function completeMission() {
+    const checkboxes = document.querySelectorAll('.task-checkbox');
+    const photos = document.querySelectorAll('.task-photo');
+    let uploads = JSON.parse(localStorage.getItem("uploads")) || [];
+    for (let i = 0; i < checkboxes.length; i++) {
+        const isChecked = checkboxes[i].checked;
+        const hasPhoto = photos[i].files.length > 0;
+        if (isChecked && !hasPhoto) {
+            alert("Please upload the image for all completed tasks.");
+            return;
+        }
+        if (!isChecked && hasPhoto) {
+            alert("Please check the task for which you uploaded a photo.");
+            return;
+        }
+        if (isChecked && hasPhoto) {
+            const file = photos[i].files[0];
+            const task = photos[i].previousElementSibling.textContent;
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const upload = {
+                    username: sessionStorage.getItem("currentUser"),
+                    task: task,
+                    image: event.target.result
+                };
+                uploads.push(upload);
+                localStorage.setItem("uploads", JSON.stringify(uploads));
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+    const completedTasks = [...checkboxes].filter((cb, i) => cb.checked && photos[i].files.length > 0).length;
+
+    window.location.href = `success.html?completedTasks=${completedTasks}`;
+}
+</script>
+
+</body>
+</html>

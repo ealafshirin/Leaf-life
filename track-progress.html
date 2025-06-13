@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leaf&Life - Track progress</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body.track-progress-page {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #a8e063, #56ab2f);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .progress-container {
+            background: #ffffff;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 450px;
+        }
+        h1 {
+            margin-bottom: 10px;
+            color: #2e7d32;
+        }
+        p {
+            margin-bottom: 30px;
+            color: #555;
+        }
+        .level-info {
+            font-size: 1.2rem;
+            margin: 20px 0;
+            color: #388e3c;
+        }
+        .xp-info {
+            margin: 10px 0;
+            color: #555;
+        }
+        progress {
+            width: 100%;
+            height: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #388e3c;
+        }
+    </style>
+</head>
+<body class="track-progress-page">
+    <div class="progress-container">
+        <h1>Your Progress</h1>
+        <p>Level up by completing missions!</p>
+        <div class="level-info">
+            Current Level: <span id="current-level">1</span>
+        </div>
+        <div class="xp-info">
+            XP: <span id="current-xp">0</span> / <span id="xp-to-next">100</span>
+        </div>
+        <progress id="xp-bar" value="0" max="100"></progress>
+        <button onclick="location.href='welcome.html'">Home</button>
+    </div>
+    <script>
+const currentUser = sessionStorage.getItem("currentUser");
+const progress = JSON.parse(localStorage.getItem(currentUser + "_progress")) || { xp: 0, level: 1 };
+const xpPerLevel = 100;
+const currentLevel = Math.floor(progress.xp / xpPerLevel) + 1;
+const xpInCurrentLevel = progress.xp % xpPerLevel;
+document.getElementById('current-level').textContent = currentLevel;
+document.getElementById('current-xp').textContent = xpInCurrentLevel;
+document.getElementById('xp-to-next').textContent = xpPerLevel;
+document.getElementById('xp-bar').value = xpInCurrentLevel;
+document.getElementById('xp-bar').max = xpPerLevel;
+    </script>
+</body>
+</html>
